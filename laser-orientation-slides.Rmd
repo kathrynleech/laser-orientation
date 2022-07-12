@@ -33,6 +33,8 @@ knitr::opts_chunk$set(echo = FALSE)
 ```{r, echo=FALSE}
 # then load all the relevant packages
 pacman::p_load(pacman, knitr)
+library(readr)
+library(tidyverse)
 ```
 
 ```{r xaringan-panelset, echo=FALSE}
@@ -709,14 +711,14 @@ my_cat
 .panel[.panel-name[Pipes]
 
 ```{r, echo=TRUE, message=FALSE, eval=TRUE}
-sci_data <- read_csv("data/sci-online-classes.csv") |> # read in data
-  select(student_id, FinalGradeCEMS, course_id, ) |> # select variables
-  rename(final_grade = FinalGradeCEMS) |> # rename FinalGradeCEMS
-  filter(final_grade > .5) |> # keep grades higher than 50% 
+sci_data <- read_csv("data/sci-online-classes.csv") %>% # read in data
+  select(student_id, FinalGradeCEMS, course_id, ) %>% # select variables
+  rename(final_grade = FinalGradeCEMS) %>% # rename FinalGradeCEMS
+  filter(final_grade > .5) %>% # keep grades higher than 50% 
   drop_na() # remove rows with missing data
 ```
 
-Pipes are a very powerful tool for combining a sequence of functions or processes. The original pipe operator `%>%` comes from the {magrittr} but pipe has become such a useful and much used operator in R that it is now baked into R with the new `|>` operator. 
+Pipes are a very powerful tool for combining a sequence of functions or processes. The original pipe operator `%>%` comes from the {magrittr} but pipe has become such a useful and much used operator in R that it is now baked into R with the new `%>%` operator. 
 
 ]
 
@@ -738,7 +740,7 @@ sci_data
 .center[
 
 ```{r, echo=FALSE, eval = TRUE}
-sci_data |>
+sci_data %>%
   head()
 ```
 ]]

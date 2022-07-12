@@ -11,6 +11,6 @@ sci_online_classes <- read_csv("data/sci-online-classes.csv")
 View(sci_online_classes)
 sci_data <- sci_online_classes
 
-#plot
+#plot science data
 ggplot(sci_data, aes(x = FinalGradeCEMS)) +
   geom_histogram(fill = "blue")

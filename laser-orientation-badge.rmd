@@ -1,7 +1,7 @@
 ---
 title: "LASER Badge"
 subtitle: "LASER Institute Orientation"
-author: "YOUR NAME HERE"
+author: "Katie Leech"
 date: "`r format(Sys.Date(),'%B %e, %Y')`"
 output:
   html_document:
@@ -157,9 +157,9 @@ What do you notice about this data set? What do you wonder? Add one-two
 thoughts following the dashes next (you can add additional dashes if you
 like!):
 
--   
+-   The data is in tidy format.
 
--   
+-   There is some missing data which is indicated by NA. 
 
 There are other ways to inspect your data; the `glimpse()` function
 provides one such way. Run the code below to take a glimpse at your
@@ -184,11 +184,11 @@ your area of work and/or research.
 
 What rows typically (or you think may) represent:
 
--   
+-   Rows are typically the unit of observation, such as a person, school, etc. 
 
 What columns typically (or you think may) represent:
 
--   
+-   Columns are typically the attributes about the units of observation, and most often serve as independent and dependent variables in analyses. 
 
 Next, we'll use a few functions that are handy for preparing data in
 table form.
@@ -207,7 +207,7 @@ through the use of the {dplyr} R package.
 Let's select only a few variables.
 
 ```{r}
-d |> 
+d %>%
   select(student_id, total_points_possible, total_points_earned)
 ```
 
@@ -234,8 +234,8 @@ variables are separated as you think about how to add an additional
 variable to this code.
 
 ```{r}
-d |> 
-  select(student_id, total_points_possible, total_points_earned)
+d %>%
+  select(student_id, total_points_possible, total_points_earned, int)
 ```
 
 Once added, the output should be different than in the code above -
@@ -249,7 +249,7 @@ the rows associated with students who earned a final grade (as a
 percentage) of 70 - 70% - or higher.
 
 ```{r}
-d |> 
+d %>%
   filter(FinalGradeCEMS > 70)
 ```
 
@@ -260,14 +260,14 @@ value - larger or smaller (maybe much larger or smaller - feel free to
 play around with the code a bit!).
 
 ```{r}
-d |> 
-  filter(FinalGradeCEMS > 70)
+d %>% 
+  filter(FinalGradeCEMS > 98)
 ```
 
 What happens when you change the cut-off from 70 to something else? Add
 a thought (or more):
 
--   
+-   I changed the cut off from >70 to >98. Now the data is filtered to only include rows where final grades are greater than 98. 
 
 ### Arrange
 
@@ -278,8 +278,8 @@ select(). We do this so we can view only the student ID and their final
 grade.
 
 ```{r}
-d |> 
-  select(student_id, FinalGradeCEMS) |> 
+d %>%
+  select(student_id, FinalGradeCEMS) %>%
   arrange(FinalGradeCEMS)
 ```
 
@@ -288,8 +288,8 @@ lowest to highest); you can change this by using the desc() function
 with arrange, like the following:
 
 ```{r}
-d |> 
-  select(student_id, FinalGradeCEMS) |> 
+d %>%
+  select(student_id, FinalGradeCEMS) %>% 
   arrange(desc(FinalGradeCEMS))
 ```
 
@@ -301,9 +301,9 @@ data set. Consider returning to the code chunk above in which you
 glimpsed at the names of all of the variables.
 
 ```{r}
-d |> 
-  select(student_id, FinalGradeCEMS) |> 
-  arrange(desc(FinalGradeCEMS))
+d %>%
+  select(student_id, TimeSpent) %>%
+  arrange(desc(TimeSpent))
 ```
 
 ### Reach 1 🎉
@@ -319,6 +319,10 @@ more in class, too!)*
 
 ```{r}
 
+d %>%
+filter(Gender == "F") %>%
+  select(student_id, int) %>%
+  arrange((desc(int)))
 ```
 
 ## 3. EXPLORE
@@ -357,7 +361,7 @@ consider this list of valid color names here:
 
 ```{r}
 ggplot(d, aes(x = FinalGradeCEMS)) +
-  geom_histogram(fill = "blue")
+  geom_histogram(fill = "darkmagenta")
 ```
 
 Finally, we'll make one more change; visualize the distribution of
@@ -366,8 +370,8 @@ so by swapping out the name for another variable with FinalGradeCEMS.
 Also, change the color to one other than blue.
 
 ```{r}
-ggplot(d, aes(x = FinalGradeCEMS)) +
-  geom_histogram(fill = "blue")
+ggplot(d, aes(x = int)) +
+  geom_histogram(fill = "darkolivegreen4")
 ```
 
 ### Reach 2 🎉
@@ -378,7 +382,8 @@ the names of two variables to the code below for what is now simply XXX
 (a placeholder).
 
 ```{r}
-ggplot(d, aes(x = XXX, y = XXX)) +
+
+ggplot(d, aes(x = FinalGradeCEMS, y = TimeSpent_hours)) +
   geom_point()
 ```
 
@@ -412,7 +417,7 @@ results? We're going to dive into this *much* more: if you have many
 questions now, you're in the right spot!
 
 ```{r}
-m2 <- lm(FinalGradeCEMS ~ TimeSpent + subject, data = d)
+m2 <- lm(FinalGradeCEMS ~ TimeSpent + subject + int, data = d)
 summary(m2)
 ```
 
